@@ -1,0 +1,74 @@
+var exports = module.exports = {};
+var request = require('request');
+
+var apiKey = ""; // Your Xeggex API key
+exports.apiKey = exports.apiKey;
+
+// Make GET request to API
+exports.apiRequest = function(endpoint, params, callback) {
+    var url = 'https://api.xeggex.com/v2/' + endpoint + '?' + params;
+    
+    request.get(url, function(error, response, body) {
+        if (error) {
+            return callback({ success: false, error: error });
+        } else {
+            return callback({ success: true, data: JSON.parse(body) });
+        }
+    });
+};
+
+// Get a list of markets
+exports.listMarkets = function(callback) {
+    var endpoint = "markets";
+    var params = "api_key=" + exports.apiKey;
+    
+    exports.apiRequest(endpoint, params, function(result) {
+        if (result.success) {
+            return callback(result.data);
+        } else {
+            return callback({ error: result.error });
+        }
+    });
+};
+
+// Get ticker of a specific market
+exports.ticker = function(market, callback) {
+    var endpoint = "ticker";
+    var params = "api_key=" + exports.apiKey + "&market=" + market;
+    
+    exports.apiRequest(endpoint, params, function(result) {
+        if (result.success) {
+            return callback(result.data);
+        } else {
+            return callback({ error: result.error });
+        }
+    });
+};
+
+// Get order book of a specific market
+exports.orderBook = function(market, callback) {
+    var endpoint = "orderbook";
+    var params = "api_key=" + exports.apiKey + "&market=" + market;
+    
+    exports.apiRequest(endpoint, params, function(result) {
+        if (result.success) {
+            return callback(result.data);
+        } else {
+            return callback({ error: result.error });
+        }
+    });
+};
+
+// Get recent trades of a specific market
+exports.recentTrades = function(market, callback) {
+    var endpoint = "trades";
+    var params = "api_key=" + exports.apiKey + "&market=" + market;
+    
+    exports.apiRequest(endpoint, params, function(result) {
+        if (result.success) {
+            return callback(result.data);
+        } else {
+            return callback({ error: result.error });
+        }
+    });
+};
